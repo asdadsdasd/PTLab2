@@ -6,12 +6,10 @@ from datetime import datetime
 class CustomerModelTest(TestCase):
 
     def setUp(self):
-        # Создаем несколько продуктов для тестирования
         self.product1 = Product.objects.create(name="Товар 1", price=3000)
         self.product2 = Product.objects.create(name="Товар 2", price=2500)
 
     def test_customer_creation(self):
-        # Создаем клиента и проверяем его создание
         customer = Customer.objects.create(name="Иван", address="Москва")
         self.assertEqual(customer.name, "Иван")
         self.assertEqual(customer.address, "Москва")
@@ -19,19 +17,16 @@ class CustomerModelTest(TestCase):
         self.assertEqual(customer.discount, 0.0)
 
     def test_update_discount_no_discount(self):
-        # Создаем клиента и проверяем скидку для низкой суммы покупок
         customer = Customer.objects.create(name="Иван", address="Москва")
         self.assertEqual(customer.discount, 0.0)
 
     def test_update_discount_5_percent(self):
-        # Проверяем скидку 5%, когда сумма покупок >= 5000
         customer = Customer.objects.create(name="Иван", address="Москва")
         customer.total_spent = 5000
         customer.update_discount()
         self.assertEqual(customer.discount, 5.0)
 
     def test_update_discount_10_percent(self):
-        # Проверяем скидку 10%, когда сумма покупок >= 10000
         customer = Customer.objects.create(name="Иван", address="Москва")
         customer.total_spent = 10000
         customer.update_discount()

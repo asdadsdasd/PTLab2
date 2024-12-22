@@ -17,21 +17,16 @@ class PurchaseCreate(CreateView):
     fields = ['product', 'person', 'address']
 
     def form_valid(self, form):
-        # Сохраняем покупку, но не отправляем ответ
         self.object = form.save()
 
-        # Получаем продукт и данные из формы
-        product = self.object.product  # Получаем продукт из формы
-        person_name = self.object.person  # Имя покупателя из формы
-        address = self.object.address  # Адрес покупателя из формы
+        product = self.object.product
+        person_name = self.object.person
+        address = self.object.address
 
-        # Проверяем, есть ли покупатель с таким именем и адресом, если нет, создаем нового
         customer, created = Customer.objects.get_or_create(name=person_name, address=address)
 
-        # Обновляем данные покупателя
         customer.total_spent += product.price
         customer.update_discount()
 
-        # Возвращаем сообщение с благодарностью
         return HttpResponse(f'Спасибо за покупку, {person_name}! Ваша скидка: {customer.discount}%')
 

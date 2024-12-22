@@ -3,11 +3,10 @@ from django.db import models
 class Customer(models.Model):
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
-    total_spent = models.PositiveIntegerField(default=0)  # Сумма всех покупок
-    discount = models.FloatField(default=0.0)  # Накопительная скидка в процентах
+    total_spent = models.PositiveIntegerField(default=0)
+    discount = models.FloatField(default=0.0)
 
     def update_discount(self):
-        """Обновляет скидку в зависимости от общей суммы покупок."""
         if self.total_spent >= 10000:
             self.discount = 10.0
         elif self.total_spent >= 5000:
